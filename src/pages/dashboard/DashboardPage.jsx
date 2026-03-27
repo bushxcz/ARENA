@@ -77,39 +77,45 @@ function DashboardPage() {
 
       {feedback ? (
         <div
-          className={`rounded-2xl border px-4 py-3 text-sm ${
-            feedback.type === 'success'
-              ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-100'
-              : 'border-rose-400/30 bg-rose-500/10 text-rose-100'
-          }`}
+          className="flex items-center gap-3 p-4"
+          style={{
+            borderLeft: `2px solid ${feedback.type === 'success' ? '#00FF88' : '#ff4444'}`,
+            background: `rgba(${feedback.type === 'success' ? '0,255,136' : '255,68,68'},0.05)`,
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.75rem',
+            color: feedback.type === 'success' ? '#00FF88' : '#ff4444',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+          }}
         >
+          <iconify-icon icon={feedback.type === 'success' ? "solar:check-circle-linear" : "solar:danger-triangle-linear"} style={{ fontSize: '1.25rem' }} />
           {feedback.message}
         </div>
       ) : null}
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <Card title="User" description="Current signed-in profile">
-          <div className="space-y-3 text-sm text-slate-300">
-            <div className="flex items-center justify-between">
-              <span>Name</span>
+        <Card title="User Profile" description="Current signed-in identity">
+          <div className="space-y-4" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem' }}>
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <span style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Name</span>
               <span className="font-medium text-white">{user?.name}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span>Role</span>
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <span style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Role</span>
               <Badge variant={user?.role === 'admin' ? 'warning' : 'primary'}>{user?.role}</Badge>
             </div>
-            <div className="flex items-center justify-between">
-              <span>Team</span>
+            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+              <span style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Team</span>
               <span className="font-medium text-white">{myTeam?.name ?? 'Not joined'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Rank</span>
+              <span style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Rank</span>
               <span className="font-medium text-white">{myRank || 'Unranked'}</span>
             </div>
           </div>
         </Card>
 
-        <Card title="Teams" description="Your club teams and participation snapshot">
+        <Card title="Teams" description="Your club teams and status">
           {teamLoading ? (
             <div className="space-y-3">
               <Skeleton className="h-14" />
@@ -118,81 +124,94 @@ function DashboardPage() {
           ) : teams.length ? (
             <div className="space-y-3">
               {teams.slice(0, 3).map((team) => (
-                <div key={team.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div key={team.id} className="p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <div className="flex items-center justify-between">
-                    <p className="font-medium text-white">{team.name}</p>
+                    <p style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, color: '#fff' }}>{team.name}</p>
                     <Badge variant={team.joinedContest ? 'success' : 'default'}>
-                      {team.joinedContest ? 'Contest Ready' : 'Standby'}
+                      {team.joinedContest ? 'READY' : 'STANDBY'}
                     </Badge>
                   </div>
-                  <p className="mt-2 text-sm text-slate-400">
-                    {team.members.length} members · Invite code {team.code}
+                  <p className="mt-2" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    {team.members.length} members · Code {team.code}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <EmptyState title="No teams yet" description="Create a team to start collaborating on contests." compact />
+            <EmptyState title="No teams yet" description="Create or join a team to start collaborating." compact />
           )}
         </Card>
 
-        <Card title="Current contest" description="Quick room visibility for the active arena">
+        <Card title="Current arena" description="Live contest status">
           {currentRoom ? (
-            <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="p-4" style={{ background: 'rgba(0,255,136,0.03)', border: '1px solid rgba(0,255,136,0.2)' }}>
               <div className="flex items-center justify-between">
-                <p className="font-medium text-white">{currentRoom.name}</p>
-                <Badge variant={getStatusTone(currentRoom.status)}>{currentRoom.statusLabel}</Badge>
+                <p style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, color: '#00FF88' }}>{currentRoom.name}</p>
+                <Badge variant={getStatusTone(currentRoom.status)}>{currentRoom.statusLabel?.toUpperCase()}</Badge>
               </div>
-              <p className="text-sm text-slate-400">{currentRoom.description}</p>
-              <p className="text-sm text-slate-300">{currentRoom.participants.length} teams joined</p>
+              <p className="mt-2" style={{ fontSize: '0.8rem', color: '#E8E8E0' }}>{currentRoom.description}</p>
+              <p className="mt-4" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <iconify-icon icon="solar:users-group-rounded-linear" className="mr-1 inline-block align-middle" />
+                {currentRoom.participants.length} teams joined
+              </p>
             </div>
           ) : (
-            <EmptyState title="No contest joined" description="Choose an available contest below to enter the arena." compact />
+            <EmptyState title="No contest joined" description="Select an available arena below." compact />
           )}
         </Card>
       </div>
 
-      <Card title="Available contests" description="Join a room and start preparing with your team.">
+      <Card title="Available contests/arenas" description="Choose a competition to register your team.">
         {roomsLoading ? (
           <div className="grid gap-4 md:grid-cols-2">
-            <Skeleton className="h-44" />
-            <Skeleton className="h-44" />
+            <Skeleton className="h-40" />
+            <Skeleton className="h-40" />
           </div>
         ) : rooms.length ? (
           <div className="grid gap-4 md:grid-cols-2">
             {rooms.map((room) => (
-              <div key={room.id} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-lg font-semibold text-white">{room.name}</p>
-                    <p className="mt-2 text-sm text-slate-400">{room.description}</p>
+              <div key={room.id} className="p-5 flex flex-col justify-between hover:border-white/20 transition-colors" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', minHeight: '11rem' }}>
+                <div>
+                  <div className="flex items-start justify-between gap-4">
+                    <p style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, fontSize: '1.25rem', color: '#fff' }}>{room.name}</p>
+                    <Badge variant={getStatusTone(room.status)}>{room.statusLabel?.toUpperCase()}</Badge>
                   </div>
-                  <Badge variant={getStatusTone(room.status)}>{room.statusLabel}</Badge>
+                  <p className="mt-3" style={{ fontSize: '0.85rem', color: '#6B7280' }}>{room.description}</p>
                 </div>
-                <div className="mt-5 flex items-center justify-between text-sm text-slate-400">
-                  <span>{room.participants.length} teams</span>
+                
+                <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/5">
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: '#00FF88', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <iconify-icon icon="solar:users-group-rounded-linear" className="mr-1 inline-block align-middle" />
+                    {room.participants.length} Teams
+                  </span>
                   <Button size="sm" onClick={() => joinContest(room.id, user?.teamId)} disabled={!user?.teamId}>
-                    Join Contest
+                    {user?.teamId ? 'Join Arena' : 'Requires Team'}
                   </Button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <EmptyState title="No contests available" description="Admins can create a contest room once the schedule is ready." />
+          <EmptyState title="No contests available" description="Admins will provision new arenas shortly." />
         )}
       </Card>
 
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
-        title="Create a team"
-        description="Add a team name and instantly register it into the dashboard."
+        title="Initialize Team"
+        description="Provision a new team roster for the arena."
       >
-        <div className="space-y-4">
-          <Input value={teamName} onChange={(event) => setTeamName(event.target.value)} placeholder="Binary Brigade" />
-          <Button className="w-full" onClick={handleCreateTeam}>
-            Save team
+        <div className="space-y-5 pt-2">
+          <Input 
+            value={teamName} 
+            onChange={(event) => setTeamName(event.target.value)} 
+            placeholder="Binary Brigade" 
+            label="Team Designation"
+            icon="solar:shield-user-linear" 
+          />
+          <Button className="w-full mt-2" onClick={handleCreateTeam}>
+            Initialize Team
           </Button>
         </div>
       </Modal>
@@ -200,13 +219,19 @@ function DashboardPage() {
       <Modal
         isOpen={isJoinOpen}
         onClose={() => setIsJoinOpen(false)}
-        title="Join an existing team"
-        description="Use the invite code shared by your captain."
+        title="Join Existing Team"
+        description="Enter the unique access code provided by your captain."
       >
-        <div className="space-y-4">
-          <Input value={joinCode} onChange={(event) => setJoinCode(event.target.value.toUpperCase())} placeholder="ALGO-21" />
-          <Button className="w-full" onClick={handleJoinTeam}>
-            Join team
+        <div className="space-y-5 pt-2">
+          <Input 
+            value={joinCode} 
+            onChange={(event) => setJoinCode(event.target.value.toUpperCase())} 
+            placeholder="ALGO-21" 
+            label="Access Code"
+            icon="solar:key-linear" 
+          />
+          <Button className="w-full mt-2" onClick={handleJoinTeam}>
+            Authenticate & Join
           </Button>
         </div>
       </Modal>
