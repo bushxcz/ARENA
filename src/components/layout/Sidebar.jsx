@@ -18,7 +18,7 @@ const baseLinks = [
 ]
 
 function Sidebar({ isAdmin = false }) {
-  const links = isAdmin ? [...baseLinks, { label: 'Admin Panel', to: '/admin' }] : baseLinks
+  const links = isAdmin ? [{ label: 'Admin Panel', to: '/admin' }] : baseLinks
 
   return (
     <aside

@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import AuthLayout from '../layouts/AuthLayout'
 import MainLayout from '../layouts/MainLayout'
+import ArenaLayout from '../layouts/ArenaLayout'
 import useAppBootstrap from '../hooks/useAppBootstrap'
 import AdminPage from '../pages/admin/AdminPage'
 import ArenaPage from '../pages/arena/ArenaPage'
@@ -29,6 +30,21 @@ function ProtectedShell() {
   return <MainLayout user={user} room={room} onLogout={logout} />
 }
 
+function ArenaShell() {
+  const user = useAuthStore((state) => state.user)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const logout = useAuthStore((state) => state.logout)
+  const room = useRoomStore((state) => state.currentRoom())
+
+  useAppBootstrap(isAuthenticated)
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/login" replace />
+  }
+
+  return <ArenaLayout user={user} room={room} onLogout={logout} />
+}
+
 function AdminRoute() {
   const user = useAuthStore((state) => state.user)
 
@@ -41,7 +57,8 @@ function AdminRoute() {
 
 function PublicRoute() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Outlet />
+  const user = useAuthStore((state) => state.user)
+  return isAuthenticated ? <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Outlet />
 }
 
 function AppRoutes() {
@@ -59,20 +76,31 @@ function AppRoutes() {
         </Route>
 
         <Route element={<ProtectedShell />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardGuard />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/room" element={<RoomPage />} />
-          <Route path="/arena" element={<ArenaPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Route>
 
+        <Route element={<ArenaShell />}>
+          <Route path="/arena" element={<ArenaPage />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )
+}
+
+function DashboardGuard() {
+  const user = useAuthStore((state) => state.user)
+  if (user?.role === 'admin') {
+    return <Navigate to="/admin" replace />
+  }
+  return <DashboardPage />
 }
 
 export default AppRoutes

@@ -93,6 +93,18 @@ function AuthLayout() {
       {/* Radial glow */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top, rgba(0,255,136,0.06) 0%, transparent 60%)' }} />
 
+      {/* Back to Home Control */}
+      <div className="absolute top-6 left-6 z-20">
+        <NavLink 
+          to="/" 
+          className="flex items-center gap-2 group transition-colors"
+          style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+        >
+          <iconify-icon icon="solar:round-alt-arrow-left-linear" className="text-xl group-hover:text-[#00FF88] transition-colors" />
+          <span className="group-hover:text-[#E8E8E0]">Return to Landing</span>
+        </NavLink>
+      </div>
+
       <div
         className="relative z-10 mx-auto grid min-h-screen items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]"
         style={{ maxWidth: 'clamp(65rem,90vw,88rem)', padding: 'clamp(1rem,5vw,4rem)' }}
