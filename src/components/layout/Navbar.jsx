@@ -16,7 +16,7 @@ function Navbar({ onLogout, room, user }) {
         style={{ maxWidth: 'clamp(65rem,90vw,88rem)', padding: '1rem clamp(1rem,5vw,4rem)' }}
       >
         <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-[#00FF88] group-hover:rotate-90 transition-transform duration-500">
               <path d="M12 2L2 12L12 22L22 12L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
               <circle cx="12" cy="12" r="3" fill="currentColor" />

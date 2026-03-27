@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../../components/landing/Navbar'
 import Hero from '../../components/landing/Hero'
-import StatsStrip from '../../components/landing/StatsStrip'
-import Features from '../../components/landing/Features'
-import Testimonials from '../../components/landing/Testimonials'
-import Pricing from '../../components/landing/Pricing'
-import CTASection from '../../components/landing/CTASection'
 import Footer from '../../components/landing/Footer'
+import useAuthStore from '../../store/useAuthStore'
 
 export default function LandingPage() {
   const canvasRef = useRef(null)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
   // Scroll-reveal observer
   useEffect(() => {
@@ -111,7 +109,7 @@ export default function LandingPage() {
           top: 0,
           left: 0,
           width: '100%',
-          height: '90vh',
+          height: '100vh', // Extend to cover the gateway
           zIndex: 0,
           pointerEvents: 'none',
           opacity: 0.4,
@@ -121,11 +119,59 @@ export default function LandingPage() {
 
       <Navbar />
       <Hero />
-      <StatsStrip />
-      <Features />
-      <Testimonials />
-      <Pricing />
-      <CTASection />
+      
+      {/* Access Gateway replacing marketing fluff */}
+      <section className="relative z-10 py-32 flex flex-col items-center justify-center border-t border-white/5" style={{ background: 'linear-gradient(180deg, rgba(4,6,8,0) 0%, rgba(11,14,20,1) 100%)' }}>
+        <div className="max-w-3xl w-full px-6 text-center reveal">
+          <div className="axon-badge mb-6" style={{ width: 'fit-content', margin: '0 auto' }}>
+            <iconify-icon icon="solar:lock-keyhole-linear" />
+            ACCESS TERMINAL
+          </div>
+          <h2 style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, fontSize: 'clamp(2rem,4vw,3rem)', color: '#fff', letterSpacing: '-0.04em', marginBottom: '1.5rem' }}>
+            Ready to deploy?
+          </h2>
+          <p className="text-slate-400 mb-12 max-w-xl mx-auto" style={{ fontSize: '1rem' }}>
+            Securely authenticate to access your teams, view active arenas, and enter live coding competitions.
+          </p>
+
+          {isAuthenticated ? (
+            <div className="p-8 axon-card mx-auto" style={{ maxWidth: '28rem' }}>
+              <iconify-icon icon="solar:shield-check-linear" className="text-5xl text-[#00FF88] mb-6 inline-block" />
+              <p className="mb-8" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', color: '#00FF88', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Active session detected // Credentials verified
+              </p>
+              <Link to="/dashboard" className="axon-btn w-full justify-center py-4 text-[0.85rem]">
+                ENTER DASHBOARD
+              </Link>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 gap-6 relative" style={{ zIndex: 2 }}>
+              <div className="p-8 axon-card flex flex-col items-center text-center hover:border-[rgba(0,255,136,0.3)] transition-colors group">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-110" style={{ background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.2)' }}>
+                  <iconify-icon icon="solar:user-plus-linear" className="text-3xl text-[#00FF88]" />
+                </div>
+                <h3 style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, fontSize: '1.25rem', color: '#fff' }} className="mb-2">New Recruit</h3>
+                <p className="text-sm text-slate-400 mb-8 px-4">Initialize a new competitor profile and start climbing ranks.</p>
+                <Link to="/auth/signup" className="axon-btn w-full justify-center">
+                  INITIALIZE PROFILE
+                </Link>
+              </div>
+
+              <div className="p-8 axon-card flex flex-col items-center text-center hover:border-white/20 transition-colors group">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-110" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <iconify-icon icon="solar:login-2-linear" className="text-3xl text-white" />
+                </div>
+                <h3 style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, fontSize: '1.25rem', color: '#fff' }} className="mb-2">Operator Return</h3>
+                <p className="text-sm text-slate-400 mb-8 px-4">Authenticate with your existing credentials to resume.</p>
+                <Link to="/auth/login" className="axon-btn w-full justify-center" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  AUTHENTICATE
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
