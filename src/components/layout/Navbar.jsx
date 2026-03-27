@@ -1,0 +1,51 @@
+import { Link, useLocation } from 'react-router-dom'
+import Badge from '../ui/Badge'
+import Button from '../ui/Button'
+import { getStatusTone } from '../../utils/helpers'
+
+function Navbar({ onLogout, room, user }) {
+  const location = useLocation()
+
+  return (
+    <header
+      className="sticky top-0 z-20 border-b border-white/5"
+      style={{ background: 'rgba(4,6,8,0.9)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+    >
+      <div
+        className="mx-auto flex items-center justify-between gap-4 py-4"
+        style={{ maxWidth: 'clamp(65rem,90vw,88rem)', padding: '1rem clamp(1rem,5vw,4rem)' }}
+      >
+        <div className="flex items-center gap-4">
+          <Link to="/dashboard" className="flex items-center gap-2 group">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-[#00FF88] group-hover:rotate-90 transition-transform duration-500">
+              <path d="M12 2L2 12L12 22L22 12L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
+            </svg>
+            <span style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '-0.05em', color: '#fff' }}>
+              ARENA
+            </span>
+          </Link>
+          <Badge variant={getStatusTone(room?.status)}>
+            {room ? `Contest: ${room.statusLabel}` : 'No contest selected'}
+          </Badge>
+        </div>
+
+        <div className="hidden items-center gap-4 md:flex">
+          <div className="text-right">
+            <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem', color: '#fff', fontWeight: 500 }}>
+              {user?.name ?? 'Guest'}
+            </p>
+            <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              {user?.role === 'admin' ? 'Administrator' : 'Participant'} · {location.pathname}
+            </p>
+          </div>
+          <Button variant="ghost" onClick={onLogout}>
+            Logout
+          </Button>
+        </div>
+      </div>
+    </header>
+  )
+}
+
+export default Navbar
