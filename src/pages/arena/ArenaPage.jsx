@@ -27,7 +27,7 @@ function ArenaPage() {
   )
 
   return (
-    <section className="space-y-6">
+    <section className="flex flex-col gap-4" style={{ height: '100%' }}>
       <PageHeader
         eyebrow="Arena"
         title="Coding arena"
@@ -44,7 +44,7 @@ function ArenaPage() {
       />
 
       {room ? (
-        <div className="grid gap-6 xl:grid-cols-[1.05fr_1fr_0.95fr]">
+        <div className="grid gap-4 xl:grid-cols-[1.05fr_1fr_0.95fr] flex-1 min-h-0">
           <Card title={room.problem.title} description={room.problem.summary} className="h-full">
             <div className="space-y-5 text-sm leading-7 text-slate-300">
               <div>
@@ -74,7 +74,7 @@ function ArenaPage() {
                 <span>{room.problem.language}</span>
                 <span>Autosave disabled</span>
               </div>
-              <div className="min-h-[420px] rounded-2xl border border-white/10 bg-[#0b1120] p-4 font-mono text-sm leading-7 text-slate-300">
+              <div className="min-h-[260px] rounded-2xl border border-white/10 bg-[#0b1120] p-4 font-mono text-sm leading-7 text-slate-300">
                 <p className="text-slate-500">// Write your solution here</p>
                 <p>function solve(input) {'{'}</p>
                 <p className="pl-4 text-slate-500">// parse input</p>

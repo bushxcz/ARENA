@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden border-b border-white/5">
+    <section className="relative min-h-[80vh] flex items-center pt-24 pb-12 overflow-hidden border-b border-white/5">
       {/* WebGL Canvas is rendered in parent LandingPage */}
 
       <div

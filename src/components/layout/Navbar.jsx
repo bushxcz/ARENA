@@ -28,6 +28,22 @@ function Navbar({ onLogout, room, user }) {
           <Badge variant={getStatusTone(room?.status)}>
             {room ? `Contest: ${room.statusLabel}` : 'No contest selected'}
           </Badge>
+          {location.pathname !== '/dashboard' && location.pathname !== '/admin' && (
+            <Link
+              to="/dashboard"
+              className="flex items-center gap-1.5 transition-colors hover:text-[#00FF88]"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '0.65rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: '#6B7280',
+              }}
+            >
+              <iconify-icon icon="solar:arrow-left-linear" style={{ fontSize: '0.85rem' }} />
+              Dashboard
+            </Link>
+          )}
         </div>
 
         <div className="hidden items-center gap-4 md:flex">

@@ -121,7 +121,7 @@ export default function LandingPage() {
       <Hero />
       
       {/* Access Gateway replacing marketing fluff */}
-      <section className="relative z-10 py-32 flex flex-col items-center justify-center border-t border-white/5" style={{ background: 'linear-gradient(180deg, rgba(4,6,8,0) 0%, rgba(11,14,20,1) 100%)' }}>
+      <section className="relative z-10 py-16 flex flex-col items-center justify-center border-t border-white/5" style={{ background: 'linear-gradient(180deg, rgba(4,6,8,0) 0%, rgba(11,14,20,1) 100%)' }}>
         <div className="max-w-3xl w-full px-6 text-center reveal">
           <div className="axon-badge mb-6" style={{ width: 'fit-content', margin: '0 auto' }}>
             <iconify-icon icon="solar:lock-keyhole-linear" />
@@ -163,7 +163,7 @@ export default function LandingPage() {
                 </div>
                 <h3 style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 600, fontSize: '1.25rem', color: '#fff' }} className="mb-2">Operator Return</h3>
                 <p className="text-sm text-slate-400 mb-8 px-4">Authenticate with your existing credentials to resume.</p>
-                <Link to="/auth/login" className="axon-btn w-full justify-center" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <Link to="/auth/login" className="axon-btn w-full justify-center" style={{ background: 'transparent', color: '#fff', border: '1px solid #fff' }}>
                   AUTHENTICATE
                 </Link>
               </div>
