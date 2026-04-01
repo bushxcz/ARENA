@@ -6,7 +6,9 @@ const icons = {
   Contests: 'solar:cup-linear',
   Arena: 'solar:code-square-linear',
   Leaderboard: 'solar:ranking-linear',
+  Profile: 'solar:user-circle-linear',
   'Admin Panel': 'solar:settings-linear',
+  'Admin Profile': 'solar:shield-user-linear',
 }
 
 const baseLinks = [
@@ -15,10 +17,16 @@ const baseLinks = [
   { label: 'Contests', to: '/room' },
   { label: 'Arena', to: '/arena' },
   { label: 'Leaderboard', to: '/leaderboard' },
+  { label: 'Profile', to: '/profile' },
+]
+
+const adminLinks = [
+  { label: 'Admin Panel', to: '/admin' },
+  { label: 'Admin Profile', to: '/profile' },
 ]
 
 function Sidebar({ isAdmin = false }) {
-  const links = isAdmin ? [{ label: 'Admin Panel', to: '/admin' }] : baseLinks
+  const links = isAdmin ? adminLinks : baseLinks
 
   return (
     <aside

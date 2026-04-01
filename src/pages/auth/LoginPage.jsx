@@ -27,7 +27,8 @@ function LoginPage() {
     async (formValues) => {
       const success = await login(formValues)
       if (success) {
-        navigate('/dashboard')
+        const user = useAuthStore.getState().user
+        navigate('/profile')
       }
     },
   )

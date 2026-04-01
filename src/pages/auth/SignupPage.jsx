@@ -30,7 +30,8 @@ function SignupPage() {
     async (formValues) => {
       const success = await signup(formValues)
       if (success) {
-        navigate('/dashboard')
+        const user = useAuthStore.getState().user
+        navigate('/profile')
       }
     },
   )

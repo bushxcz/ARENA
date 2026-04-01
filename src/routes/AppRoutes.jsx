@@ -4,12 +4,14 @@ import MainLayout from '../layouts/MainLayout'
 import ArenaLayout from '../layouts/ArenaLayout'
 import useAppBootstrap from '../hooks/useAppBootstrap'
 import AdminPage from '../pages/admin/AdminPage'
+import AdminProfilePage from '../pages/admin/AdminProfilePage'
 import ArenaPage from '../pages/arena/ArenaPage'
 import LoginPage from '../pages/auth/LoginPage'
 import SignupPage from '../pages/auth/SignupPage'
 import DashboardPage from '../pages/dashboard/DashboardPage'
 import LandingPage from '../pages/landing/LandingPage'
 import LeaderboardPage from '../pages/leaderboard/LeaderboardPage'
+import ProfilePage from '../pages/profile/ProfilePage'
 import RoomPage from '../pages/room/RoomPage'
 import TeamPage from '../pages/team/TeamPage'
 import useAuthStore from '../store/useAuthStore'
@@ -57,8 +59,7 @@ function AdminRoute() {
 
 function PublicRoute() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
-  const user = useAuthStore((state) => state.user)
-  return isAuthenticated ? <Navigate to={user?.role === 'admin' ? '/admin' : '/dashboard'} replace /> : <Outlet />
+  return isAuthenticated ? <Navigate to="/profile" replace /> : <Outlet />
 }
 
 function AppRoutes() {
@@ -80,6 +81,7 @@ function AppRoutes() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/room" element={<RoomPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/profile" element={<ProfileGuard />} />
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminPage />} />
           </Route>
@@ -98,9 +100,17 @@ function AppRoutes() {
 function DashboardGuard() {
   const user = useAuthStore((state) => state.user)
   if (user?.role === 'admin') {
-    return <Navigate to="/admin" replace />
+    return <Navigate to="/profile" replace />
   }
   return <DashboardPage />
+}
+
+function ProfileGuard() {
+  const user = useAuthStore((state) => state.user)
+  if (user?.role === 'admin') {
+    return <AdminProfilePage />
+  }
+  return <ProfilePage />
 }
 
 export default AppRoutes

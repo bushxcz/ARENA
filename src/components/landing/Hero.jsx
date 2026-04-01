@@ -25,7 +25,7 @@ export default function Hero() {
 
           <div className="flex flex-wrap items-center gap-4 reveal stagger-3">
             <a href="/auth/signup" className="axon-btn">Get Started</a>
-            <a href="#features" className="axon-btn axon-btn-outline">Explore Features</a>
+            <a href="/room" className="axon-btn axon-btn-outline">View Leaderboard</a>
           </div>
 
           <div className="mt-8 flex items-center gap-3 reveal stagger-3" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
