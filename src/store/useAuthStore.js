@@ -30,6 +30,11 @@ const useAuthStore = create((set) => ({
       return false
     }
   },
+  updateProfile(updates) {
+    set((state) => ({
+      user: state.user ? { ...state.user, ...updates } : state.user,
+    }))
+  },
   assignTeam(teamId) {
     set((state) => ({
       user: state.user ? { ...state.user, teamId } : state.user,

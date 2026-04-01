@@ -28,6 +28,7 @@ function Button({
   variant = 'primary',
   size = 'md',
   type = 'button',
+  style,
   ...props
 }) {
   const sizeStyle =
@@ -38,7 +39,7 @@ function Button({
         : { padding: '0.75rem 1.5rem', fontSize: '0.75rem' }
 
   // For primary and danger, use the axon-btn class
-  const isAxonBtn = variant === 'primary' || variant === 'danger'
+  const isAxonBtn = variant === 'primary' || variant === 'secondary' || variant === 'danger'
 
   return (
     <button
@@ -47,6 +48,7 @@ function Button({
       style={{
         ...sizeStyle,
         ...(variantStyles[variant] || {}),
+        ...style,
         cursor: props.disabled ? 'not-allowed' : 'pointer',
         opacity: props.disabled ? 0.5 : 1,
       }}
