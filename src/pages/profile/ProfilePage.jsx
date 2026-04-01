@@ -1,7 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import PageHeader from '../../components/layout/PageHeader'
 import Badge from '../../components/ui/Badge'
+import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import EditProfileModal from '../../components/ui/EditProfileModal'
 import useAuthStore from '../../store/useAuthStore'
 import useLeaderboardStore from '../../store/useLeaderboardStore'
 import useTeamStore from '../../store/useTeamStore'
@@ -9,11 +11,16 @@ import userAvatar from '../../assets/user-avatar.png'
 
 function ProfilePage() {
   const user = useAuthStore((state) => state.user)
+  const updateProfile = useAuthStore((state) => state.updateProfile)
   const teams = useTeamStore((state) => state.teams)
   const leaderboard = useLeaderboardStore((state) => state.entries)
 
+  const [editOpen, setEditOpen] = useState(false)
+
   const myTeam = useMemo(() => teams.find((t) => t.id === user?.teamId), [teams, user?.teamId])
   const myRank = leaderboard.findIndex((e) => e.teamId === user?.teamId) + 1
+
+  const displayAvatar = user?.avatarUrl || userAvatar
 
   // Mock stats for demo
   const stats = {
@@ -53,7 +60,7 @@ function ProfilePage() {
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="relative group">
             <img
-              src={userAvatar}
+              src={displayAvatar}
               alt="User Avatar"
               className="w-24 h-24 rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
               style={{ border: '2px solid rgba(0,255,136,0.3)', boxShadow: '0 0 20px rgba(0,255,136,0.1)' }}
@@ -73,6 +80,11 @@ function ProfilePage() {
             <p className="mt-1" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {user?.email}
             </p>
+            {user?.bio && (
+              <p className="mt-2" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem', color: '#9CA3AF', lineHeight: '1.5' }}>
+                {user.bio}
+              </p>
+            )}
             <div className="flex flex-wrap items-center gap-2 mt-3 justify-center sm:justify-start">
               <Badge variant="primary">Participant</Badge>
               {myTeam && <Badge variant="success">{myTeam.name}</Badge>}
@@ -80,13 +92,26 @@ function ProfilePage() {
             </div>
           </div>
 
-          <div className="hidden lg:flex flex-col items-end gap-1">
-            <span style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 700, fontSize: '2rem', color: '#00FF88' }}>
-              {stats.totalPoints.toLocaleString()}
-            </span>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Total Points
-            </span>
+          <div className="flex flex-col items-end gap-3">
+            <div className="hidden lg:flex flex-col items-end gap-1">
+              <span style={{ fontFamily: 'Syne, system-ui, sans-serif', fontWeight: 700, fontSize: '2rem', color: '#00FF88' }}>
+                {stats.totalPoints.toLocaleString()}
+              </span>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Total Points
+              </span>
+            </div>
+
+            {/* Edit Profile Button */}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setEditOpen(true)}
+              id="edit-profile-btn"
+            >
+              <iconify-icon icon="solar:pen-new-square-linear" style={{ fontSize: '0.85rem' }} />
+              Edit Profile
+            </Button>
           </div>
         </div>
       </Card>
@@ -164,6 +189,16 @@ function ProfilePage() {
           </div>
         </Card>
       </div>
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        isOpen={editOpen}
+        onClose={() => setEditOpen(false)}
+        user={user}
+        currentAvatar={displayAvatar}
+        accentColor="#00FF88"
+        onSave={(updates) => updateProfile(updates)}
+      />
     </section>
   )
 }
